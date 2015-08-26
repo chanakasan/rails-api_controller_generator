@@ -21,7 +21,7 @@ class API::<%= controller_class_name %>Controller < API::BaseController
   # insert
   def create
     begin
-      <%= singular_table_name %> = new_announcement
+      <%= singular_table_name %> = new_<%= singular_table_name %>
       <%= singular_table_name %>.save!
 
       send_success({id: <%= singular_table_name %>.id}, 201)
