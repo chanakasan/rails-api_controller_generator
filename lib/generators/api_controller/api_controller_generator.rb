@@ -23,4 +23,6 @@ class ApiControllerGenerator < Rails::Generators::NamedBase
 CODE
     end
   end
+
+  hook_for :test_framework
 end
