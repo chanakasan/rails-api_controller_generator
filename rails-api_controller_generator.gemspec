@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.required_ruby_version = '>= 1.9.3'
-  s.name        = 'api_controller_generator'
+  s.name        = 'rails-api_controller_generator'
   s.version     = '0.1.0'
   s.summary     = 'Generates API controllers with endpoints for basic crud operations.'
   s.description = 'Generates API controllers with endpoints for basic crud operations for a model.'
