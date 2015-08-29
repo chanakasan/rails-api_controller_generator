@@ -25,7 +25,7 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
     JSON.parse(data, symbolize_names: true)
   end
 
-  context "list" do
+  xcontext "list" do
     it 'returns the list of all <%= file_name.pluralize %>' do
       create_<%= file_name %>
       get url
@@ -46,7 +46,7 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
     end
   end
 
-  context "get" do
+  xcontext "get" do
     it 'returns <%= file_name %> by id' do
       # TODO: create a new fixture
       <%= file_name %> = create_<%= file_name %>(attribute_1: 'value_1')
@@ -65,7 +65,7 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
     end
   end
 
-  context "insert" do
+  xcontext "insert" do
     it "returns 201 response if successful" do
       # TODO: set data for the request
       data = { attribute_1: 'value_1' }
@@ -88,7 +88,7 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
     end
   end
 
-  context "patch" do
+  xcontext "patch" do
     it "returns 200 response if successful"  do
       <%= file_name %> = create_<%= file_name %>
 
@@ -118,7 +118,7 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
     end
   end
 
-  context "delete" do
+  xcontext "delete" do
     it "returns 204 response if successful"  do
       <%= file_name %> = create_<%= file_name %>
 
