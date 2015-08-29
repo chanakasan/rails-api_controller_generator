@@ -1,4 +1,4 @@
-## WIP: ApiController Generator
+## ApiController Generator for Rails
 
 Generates a API controller with fully functioning endpoints for basic crud operations of a model.
 
