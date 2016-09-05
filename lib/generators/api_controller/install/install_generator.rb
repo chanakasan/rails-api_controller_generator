@@ -5,17 +5,12 @@ module ApiController
       source_root ::File.expand_path('../templates', __FILE__)
 
       def copy_base_controller
-        template "base_controller.rb", "app/controllers/api/base_controller.rb"
+        copy_file "base_controller.rb", "app/controllers/api/base_controller.rb"
       end
 
-      def add_inflection_rule
-        insert_into_file "config/initializers/inflections.rb", :after => "# These inflection rules are supported but not enabled by default:\n" do
-<<CODE
-ActiveSupport::Inflector.inflections(:en) do |inflect|
-  inflect.acronym 'API'
-end
-CODE
-        end
+      def copy_rspec_helper_file
+        empty_directory 'spec/support'
+        copy_file "api_helper.rb", "spec/support/api_helper.rb"
       end
     end
   end

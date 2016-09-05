@@ -5,61 +5,41 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
     host! "example.com"
   end
 
-  let(:url) { "/api/<%= file_name.pluralize %>" }
-
-  def url_with_id(id)
-    "/api/<%= file_name.pluralize %>/#{id}"
-  end
-
-  # TODO: set default required attribute values inside this create fixture method.
-  # Or you may remove this method and use a factory girl factory instead.
-  def create_<%= file_name %>(attributes={})
-    default_attributes = {
-      attribute_1: 'default_value',
-    }
-
-    <%= class_name %>.create!(default_attributes.merge(attributes))
-  end
-
-  def json(data)
-    JSON.parse(data, symbolize_names: true)
-  end
-
   xcontext "list" do
-    it 'returns the list of all <%= file_name.pluralize %>' do
+    it 'returns the list of all records' do
       create_<%= file_name %>
-      get url
+      get endpoint_url
 
-      json_data = json(response.body)
+      result = json(response.body)
       expect(response.status).to eq(200)
-      expect(json_data.count).to eq(1)
+      expect(result.count).to eq(1)
       # TODO: assert returned data
-      expect(json_data.first[:attribute_1]).to eq('default_value')
+      expect(result.first[:attribute_1]).to eq('value_1')
     end
 
-    it "returns an empty array if no <%= file_name.pluralize %> are found" do
-      get url
+    it "returns an empty array if no records are found" do
+      get endpoint_url
 
-      json_data = json(response.body)
+      result = json(response.body)
       expect(response.status).to eq(200)
-      expect(json_data).to eq([])
+      expect(result).to eq([])
     end
   end
 
   xcontext "get" do
-    it 'returns <%= file_name %> by id' do
-      # TODO: create a new fixture
-      <%= file_name %> = create_<%= file_name %>(attribute_1: 'value_1')
-      get url_with_id(<%= file_name %>.id)
+    it 'returns a record by id' do
+      # TODO: persist a record
+      <%= file_name %> = create_<%= file_name %>
+      get endpoint_url_with_id(<%= file_name %>.id)
 
-      json_data = json(response.body)
+      result = json(response.body)
       expect(response.status).to eq(200)
       # TODO: assert returned data
-      expect(json_data[:attribute_1]).to eq('value_1')
+      expect(result[:attribute_1]).to eq('value_1')
     end
 
-    it "returns 404 if not found" do
-      get url_with_id(123)
+    it "returns 404 response if record not found" do
+      get endpoint_url_with_id(123)
 
       expect(response.status).to eq(404)
     end
@@ -69,8 +49,7 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
     it "returns 201 response if successful" do
       # TODO: set data for the request
       data = { attribute_1: 'value_1' }
-
-      post url, <%= file_name %>: data
+      post endpoint_url, params: { <%= file_name %>: data }
 
       result = json(response.body)
       expect(response.status).to eq(201)
@@ -80,7 +59,7 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
     it "returns 422 response if failed to create" do
       # TODO: set some invalid data for the request
       data = {attribute_1: ''}
-      post url, <%= file_name %>: data
+      post endpoint_url, params: { <%= file_name %>: data }
 
       result = json(response.body)
       expect(result).to_not be_empty
@@ -91,10 +70,9 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
   xcontext "patch" do
     it "returns 200 response if successful"  do
       <%= file_name %> = create_<%= file_name %>
-
       # TODO: set updated data for the request
       data = {attribute_1: 'updated_value_1'}
-      patch url_with_id(<%= file_name %>.id), <%= file_name %>: data
+      patch endpoint_url_with_id(<%= file_name %>.id), params: { <%= file_name %>: data }
 
       expect(response.status).to eq(200)
       # TODO: assert updated data
@@ -103,17 +81,15 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
 
     it "returns 422 response if failed to update" do
       <%= file_name %> = create_<%= file_name %>
-
       # TODO: set some invalid data for the request
       data = {attribute_1: ''}
-      patch url_with_id(<%= file_name %>.id), <%= file_name %>: data
+      patch endpoint_url_with_id(<%= file_name %>.id), params: { <%= file_name %>: data }
 
       expect(response.status).to eq(422)
     end
 
-    it "returns 404 response if <%= file_name %> does not exist" do
-      patch url_with_id(123), <%= file_name %>: {}
-
+    it "returns 404 response if record not found" do
+      patch endpoint_url_with_id(123), params: { <%= file_name %>: {} }
       expect(response.status).to eq(404)
     end
   end
@@ -121,19 +97,31 @@ RSpec.describe "<%= class_name.pluralize %> API", type: :request do
   xcontext "delete" do
     it "returns 204 response if successful"  do
       <%= file_name %> = create_<%= file_name %>
-
-      delete url_with_id(<%= file_name %>.id)
+      delete endpoint_url_with_id(<%= file_name %>.id)
 
       expect(response.status).to eq(204)
-
       all_<%= file_name.pluralize %> = <%= class_name %>.all
       expect(all_<%= file_name.pluralize %>.count).to eq(0)
     end
 
-    it "returns 404 response if <%= file_name %> does not exist" do
-      delete url_with_id(123)
-
+    it "returns 404 response if record not found" do
+      delete endpoint_url_with_id(123)
       expect(response.status).to eq(404)
     end
+  end
+
+  private
+  def create_<%= file_name %>
+    raise NotImplementedError
+    # TODO:
+    # <%= class_name %>.create!(attribute_1: 'value_1')
+  end
+
+  def endpoint_url
+    "/api/<%= file_name.pluralize %>"
+  end
+
+  def endpoint_url_with_id(id)
+    "/api/<%= file_name.pluralize %>/#{id}"
   end
 end

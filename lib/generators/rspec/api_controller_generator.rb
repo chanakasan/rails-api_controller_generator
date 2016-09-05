@@ -3,11 +3,11 @@ module Rspec
     class ApiControllerGenerator < Rails::Generators::NamedBase
       source_root File.expand_path("../templates", __FILE__)
 
-      desc "Generates an API controller spec in spec/integration/api"
+      desc "Generates an API controller spec in spec/api"
 
-      def copy_template_file
-        empty_directory 'spec/integration/api'
-        template "api_spec.rb", "spec/integration/api/#{file_name.pluralize}_api_spec.rb"
+      def generate_spec
+        empty_directory 'spec/api'
+        template "api_spec.rb", "spec/api/#{file_name.pluralize}_api_spec.rb"
       end
     end
   end
